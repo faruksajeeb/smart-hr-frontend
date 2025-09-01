@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { createPermission, getPermission, updatePermission } from "../../services/permissionsService";
+import { createPermission, getPermission, updatePermission } from "../../services/PermissionsService";
 import AdminLayout from "../../layouts/AdminLayout";
 import PageTitle from "../../components/PageTitle";
 import PageLoader from "../../components/PageLoader";
@@ -72,7 +72,7 @@ export default function PermissionForm() {
     <AdminLayout title="Permission Form">
       <PageTitle
         title={editing ? "Edit Permission" : "Create Permission"}
-        subtitle={editing ? "Edit Permission for Module" : "Create Permission for a Module"}
+        subtitle={editing ? "Edit Permission for Module" : "Fill in the details below to create a new permission"}
       />
       {loading && <PageLoader />}
       {!loading && (
@@ -94,7 +94,7 @@ export default function PermissionForm() {
           </div>
 
           <div>
-            <label className="block text-sm">Permission Label <span className="text-red-600">*</span></label>
+            <label className="block text-sm">Permission Label (Ex. Create User)<span className="text-red-600">*</span></label>
             <input className="w-full border px-3 py-2 rounded-lg" value={form.label} onChange={(e)=>setForm({...form, label: e.target.value})} />
             {errors.label && <p className="text-sm text-red-600">{errors.label[0]}</p>}
           </div>

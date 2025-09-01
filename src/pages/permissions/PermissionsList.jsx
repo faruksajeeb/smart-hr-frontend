@@ -15,14 +15,18 @@ import SearchBox from "../../components/SearchBox";
 import ActionButton from "../../components/ActionButton";
 import PageTitle from "../../components/PageTitle";
 
+import { usePermissions } from "../../context/PermissionsContext";
+
 export default function PermissionsList() {
+  const { hasPermission } = usePermissions();
+
   const [PermissionsPayload, setPermissionsPayload] = useState({
     data: [],
     meta: {},
     links: {},
   });
   const [page, setPage] = useState(1);
-  
+
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState(q);
 
@@ -31,7 +35,7 @@ export default function PermissionsList() {
   const dir = "desc"; // or 'asc'
   const [sort] = useState("id"); // or 'name', 'email', etc.
 
-    // Debounce search value
+  // Debounce search value
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQ(q);
@@ -68,7 +72,6 @@ export default function PermissionsList() {
     };
 
     loadPermissions();
-    
   }, [page, debouncedQ]); // use debouncedQ here
 
   // Handle search
@@ -115,27 +118,32 @@ export default function PermissionsList() {
       />
       <div className="py-6">
         <div className="flex mb-1 text-nowrap">
-            <SearchBox
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                onSearch={handleSearch}
-                placeholder="Search by permission name or module"
-            />
+          <SearchBox
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onSearch={handleSearch}
+            placeholder="Search by permission name or module"
+          />
 
-            <ActionButton type="refresh" onClick={() => setPage(1)} >
-                Refresh
+          <ActionButton type="refresh" onClick={() => setPage(1)}>
+            Refresh
+          </ActionButton>
+          {hasPermission("add-permission") && (
+            <ActionButton type="add" to={`/permissions/create`}>
+              New Permission
             </ActionButton>
-            <ActionButton type="add" to={`/permissions/create`} >
-                New Permission
+          )}
+          {hasPermission("import-permission") && (
+            <ActionButton type="import" to={`/permissions/import`}>
+              Import
             </ActionButton>
-            <ActionButton type="import" to={`/permissions/import`} >
-                Import 
+          )}
+          {hasPermission("export-permission") && (
+            <ActionButton type="export" to={`/permissions/export`}>
+              Export
             </ActionButton>
-            <ActionButton type="export" to={`/permissions/export`} >
-                Export 
-            </ActionButton>
-
-         </div>
+          )}
+        </div>
 
         {/* Permissions table */}
         <div className="bg-white border rounded-lg overflow-x-auto">
@@ -146,7 +154,9 @@ export default function PermissionsList() {
                 <th className="p-3 text-left border border-gray-300">Module</th>
                 <th className="p-3 text-left border border-gray-300">Name</th>
                 <th className="p-3 text-left border border-gray-300">Label</th>
-                <th className="p-3 text-left border border-gray-300">Description</th>
+                <th className="p-3 text-left border border-gray-300">
+                  Description
+                </th>
                 {/* <th className="p-3 text-left border border-gray-300">Guard Name</th> */}
                 <th className="p-3 text-center">Actions</th>
               </tr>
@@ -166,22 +176,38 @@ export default function PermissionsList() {
                     key={u.id}
                     className="odd:bg-white even:bg-gray-50 transition hover:bg-gray-100 hover:text-gray-900"
                   >
-                    <td className="p-1 border  border-gray-300 text-center">{u.id}</td>
+                    <td className="p-1 border  border-gray-300 text-center">
+                      {u.id}
+                    </td>
                     <td className="p-1 border  border-gray-300">{u.module}</td>
                     <td className="p-1 border  border-gray-300">{u.name}</td>
                     <td className="p-1 border  border-gray-300">{u.label}</td>
-                    <td className="p-1 border  border-gray-300">{u.description}</td>
+                    <td className="p-1 border  border-gray-300">
+                      {u.description}
+                    </td>
                     {/* <td className="p-1 border  border-gray-300">{u.guard_name}</td> */}
                     <td className="p-1 border border-gray-300 text-right space-x-2">
-                      <ActionButton type="view" to={`/permissions/${u.id}`} >
-                            View
+                      {hasPermission("view-permission") && (
+                        <ActionButton type="view" to={`/permissions/${u.id}`}>
+                          View
                         </ActionButton>
-                        <ActionButton type="edit" to={`/permissions/${u.id}/edit`} >
-                            Edit
+                      )}
+                      {hasPermission("edit-permission") && (
+                        <ActionButton
+                          type="edit"
+                          to={`/permissions/${u.id}/edit`}
+                        >
+                          Edit
                         </ActionButton>
-                        <ActionButton type="delete" onClick={() => handleDelete(u.id)} >
-                            Delete
+                      )}
+                      {hasPermission("delete-permission") && (
+                        <ActionButton
+                          type="delete"
+                          onClick={() => handleDelete(u.id)}
+                        >
+                          Delete
                         </ActionButton>
+                      )}
                     </td>
                   </tr>
                 ))

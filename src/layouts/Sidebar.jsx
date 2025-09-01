@@ -1,7 +1,11 @@
 import { Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { usePermissions } from "../context/PermissionsContext";
+
 
 export default function Sidebar({ sidebarOpen }) {
+  const { hasPermission } = usePermissions();
+
   return (
     <aside
       className={`${
@@ -9,6 +13,7 @@ export default function Sidebar({ sidebarOpen }) {
       } lg:translate-x-0 transition-transform lg:static fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r p-4 flex-shrink-0`}
     >
       <nav className="space-y-1">
+        {hasPermission("view-user") && (
         <Link
           key="users"
           to="/users"
@@ -16,6 +21,8 @@ export default function Sidebar({ sidebarOpen }) {
         >
             Users
         </Link>
+        )}
+        {/* {hasPermission("view-permission") && ( */}
         <Link
           key="permissions"
           to="/permissions"
@@ -23,6 +30,16 @@ export default function Sidebar({ sidebarOpen }) {
         >
             Permissions
         </Link>
+{/* )} */}
+        {hasPermission("view-role") && (
+        <Link
+          key="roles"
+          to="/roles"
+          className="block px-3 py-2 rounded-xl text-sm hover:bg-gray-100"
+        >
+            Roles
+        </Link>
+        )}
         {["Overview", "Employees", "Attendance", "Payroll", "Leaves", "Settings"].map(
           (item) => (
             <a

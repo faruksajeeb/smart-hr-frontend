@@ -4,18 +4,18 @@ import api from "../lib/axios";
  * params can include: page, per_page, search, sort, dir
  * returns the entire response data (Laravel resource collection => { data: [...], meta: {...}, links: {...} })
  */
-export const fetchUsers = async (params = {}) => {
+export const fetchRoles = async (params = {}) => {
   try {
-    const res = await api.get("/users", { params });
+    const res = await api.get("/roles", { params });
     return res.data;
   } catch (error) {
     throw error.response?.data || { message: error.message };
   }
 };
 
-export const getUser = async (id) => {
+export const getRole = async (id) => {
   try {
-    const res = await api.get(`/users/${id}`);
+    const res = await api.get(`/roles/${id}`);
     // Laravel single resource is usually res.data.data
     return res.data?.data ?? res.data;
   } catch (error) {
@@ -23,45 +23,45 @@ export const getUser = async (id) => {
   }
 };
 
-export const createUser = async (payload) => {
+export const getPermissions = async () => {
   try {
-    const res = await api.post("/users", payload);
+    const res = await api.get("/role-permissions");
     return res.data?.data ?? res.data;
   } catch (error) {
     throw error.response?.data || { message: error.message };
   }
 };
 
-export const updateUser = async (id, payload) => {
+export const createRole = async (payload) => {
   try {
-    const res = await api.put(`/users/${id}`, payload);
+    const res = await api.post("/roles", payload);
     return res.data?.data ?? res.data;
   } catch (error) {
     throw error.response?.data || { message: error.message };
   }
 };
 
-export const deleteUser = async (id) => {
+export const updateRole = async (id, payload) => {
   try {
-    const res = await api.delete(`/users/${id}`);
+    const res = await api.put(`/roles/${id}`, payload);
+    return res.data?.data ?? res.data;
+  } catch (error) {
+    throw error.response?.data || { message: error.message };
+  }
+};
+
+export const deleteRole = async (id) => {
+  try {
+    const res = await api.delete(`/roles/${id}`);
     return res.data;
   } catch (error) {
     throw error.response?.data || { message: error.message };
   }
 };
 
-export const bulkDeleteUsers = async (ids) => {
+export const bulkDeleteRoles = async (ids) => {
   try {
-    const res = await api.post("/users/bulk-delete", { ids });
-    return res.data;
-  } catch (error) {
-    throw error.response?.data || { message: error.message };
-  }
-};
-
-export const getActiveRoles = async () => {
-  try {
-    const res = await api.get(`/active-roles`);
+    const res = await api.post("/roles/bulk-delete", { ids });
     return res.data;
   } catch (error) {
     throw error.response?.data || { message: error.message };

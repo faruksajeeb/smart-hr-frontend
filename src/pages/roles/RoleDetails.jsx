@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import {
-  getPermission,
-  deletePermission,
-} from "../../services/PermissionsService";
-
+import { getRole, deleteRole } from "../../services/rolesService";
 import Swal from "sweetalert2";
 import AdminLayout from "../../layouts/AdminLayout";
 import PageTitle from "../../components/PageTitle";
@@ -13,19 +9,19 @@ import PageLoader from "../../components/PageLoader";
 
 import { usePermissions } from "../../context/PermissionsContext";
 
-export default function PermissionDetails() {
+export default function RoleDetails() {
   const { hasPermission } = usePermissions();
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [Permission, setPermission] = useState(null);
+  const [Role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const u = await getPermission(id);
-        setPermission(u);
+        const u = await getRole(id);
+        setRole(u);
       } catch (err) {
         Swal.fire("Error", err.message || "Failed to load", "error");
       } finally {
@@ -36,7 +32,7 @@ export default function PermissionDetails() {
 
   const handleDelete = async () => {
     const result = await Swal.fire({
-      title: "Delete Permission?",
+      title: "Delete Role?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Delete",
@@ -46,9 +42,9 @@ export default function PermissionDetails() {
     if (!result.isConfirmed) return;
 
     try {
-      await deletePermission(id);
-      Swal.fire("Deleted", "Permission deleted", "success");
-      navigate("/permissions");
+      await deleteRole(id);
+      Swal.fire("Deleted", "Role deleted", "success");
+      navigate("/Roles");
     } catch (err) {
       Swal.fire("Error", err.message || "Delete failed", "error");
     }
@@ -57,38 +53,30 @@ export default function PermissionDetails() {
   // if (loading) return <div className="p-6">Loading...</div>;
 
   return (
-    <AdminLayout title="Permission Details">
-      <PageTitle
-        title="Permission Details"
-        subtitle="View Permission Details"
-      />
+    <AdminLayout title="Role Details">
+      <PageTitle title="Role Details" subtitle="View Role Details" />
 
       {loading && <PageLoader />}
 
-      {!loading && !Permission && (
-        <div className="p-6">Permission not found.</div>
-      )}
+      {!loading && !Role && <div className="p-6">Role not found.</div>}
 
-      {!loading && Permission && (
+      {!loading && Role && (
         <>
           <div className="py-2 max-w-2xl">
             <div className="flex items-start justify-between">
-              <h3 className="text-xl font-semibold">{Permission.name}</h3>
+              <h3 className="text-xl font-semibold">{Role.name}</h3>
               <div className="flex gap-2">
-                {hasPermission("view-permission") && (
-                  <ActionButton type="manage" to={`/permissions`}>
+                {hasPermission("view-role") && (
+                  <ActionButton type="manage" to={`/Roles`}>
                     Manage
                   </ActionButton>
                 )}
-                {hasPermission("edit-permission") && (
-                  <ActionButton
-                    type="edit"
-                    to={`/permissions/${Permission.id}/edit`}
-                  >
+                {hasPermission("edit-role") && (
+                  <ActionButton type="edit" to={`/Roles/${Role.id}/edit`}>
                     Edit
                   </ActionButton>
                 )}
-                {hasPermission("delete-permission") && (
+                {hasPermission("delete-role") && (
                   <ActionButton type="delete" onClick={handleDelete}>
                     Delete
                   </ActionButton>
@@ -98,16 +86,25 @@ export default function PermissionDetails() {
 
             <div className="mt-4 bg-white border rounded p-4">
               <p>
-                <strong>Module:</strong> {Permission.module}
+                <strong>Name:</strong> {Role.name}
               </p>
               <p>
-                <strong>Name:</strong> {Permission.name}
+                <strong>Label:</strong> {Role.label}
               </p>
               <p>
-                <strong>Label:</strong> {Permission.label}
+                <strong>Permissions:</strong>
+                <br />
+                {Role.permissions.map((p) => (
+                  <span
+                    key={p.id}
+                    className="m-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
+                  >
+                    {p.label}
+                  </span>
+                ))}
               </p>
               <p className="text-sm text-gray-500 mt-2">
-                Created: {new Date(Permission.created_at).toLocaleString()}
+                Created: {new Date(Role.created_at).toLocaleString()}
               </p>
             </div>
           </div>

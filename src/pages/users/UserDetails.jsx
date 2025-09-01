@@ -5,8 +5,12 @@ import Swal from "sweetalert2";
 import AdminLayout from "../../layouts/AdminLayout";
 import PageTitle from "../../components/PageTitle";
 import ActionButton from "../../components/ActionButton";
+import PageLoader from "../../components/PageLoader";
+import { usePermissions } from "../../context/PermissionsContext";
 
 export default function UserDetails() {
+  const { hasPermission } = usePermissions();
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -45,8 +49,6 @@ export default function UserDetails() {
     }
   };
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (!user) return <div className="p-6">User not found.</div>;
 
   return (
     <AdminLayout title="User Details">
@@ -54,19 +56,32 @@ export default function UserDetails() {
         title="User Details"
         subtitle="View User Details"
       />
+      {loading && <PageLoader />}
+           
+            {!loading && !user && (
+              <div className="p-6">Role not found.</div>
+            )}
+      
+            {!loading && user && (
       <div className="py-2 max-w-2xl">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-semibold">{user.name}</h3>
           <div className="flex gap-2">
+            {hasPermission("view-user") && (
             <ActionButton type="manage" to={`/users`} >
                 Manage
             </ActionButton>
+            )}
+            {hasPermission("edit-user") && (
             <ActionButton type="edit" to={`/users/${user.id}/edit`} >
                 Edit
             </ActionButton>
+            )}
+            {hasPermission("delete-user") && (
             <ActionButton type="delete" onClick={handleDelete}>
                 Delete
             </ActionButton>
+            )}
           </div>
         </div>
 
@@ -75,13 +90,22 @@ export default function UserDetails() {
             <strong>Email:</strong> {user.email}
           </p>
           <p>
-            <strong>Role:</strong> {user.role}
-          </p>
+                <strong>Roles:</strong><br/>
+                  {user.roles.map((p) => (
+                      <span
+                        key={p.id}
+                        className="m-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
+                      >
+                        {p.name}
+                      </span>
+                    ))}
+              </p>
           <p className="text-sm text-gray-500 mt-2">
             Created: {new Date(user.created_at).toLocaleString()}
           </p>
         </div>
       </div>
+            )}
     </AdminLayout>
   );
 }

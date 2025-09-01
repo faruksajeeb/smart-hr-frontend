@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { PermissionsProvider } from "./context/PermissionsContext";
+
 import Home from './pages/Home.jsx'
 
 // Import Bootstrap CSS and JS
@@ -20,11 +22,16 @@ import PermissionsList from './pages/permissions/PermissionsList.jsx';
 import PermissionForm from './pages/permissions/PermissionForm.jsx';
 import PermissionDetails from './pages/permissions/PermissionDetails.jsx';
 
+import RolesList from './pages/roles/RolesList.jsx';
+import RoleForm from './pages/roles/RoleForm.jsx';
+import RoleDetails from './pages/roles/RoleDetails.jsx';
+
 
 
 function App() {
+ 
   return (
-      // <BrowserRouter>
+    <PermissionsProvider>
         <Routes>
             {/* Public routes */}
             <Route path="/register" element={<Register />} />
@@ -50,10 +57,15 @@ function App() {
               <Route path="/permissions/create" element={<PermissionForm />} />
               <Route path="/permissions/:id/edit" element={<PermissionForm />} />
               <Route path="/permissions/:id" element={<PermissionDetails />} />
+
+              <Route path="/roles" element={<RolesList />} />
+              <Route path="/roles/create" element={<RoleForm />} />
+              <Route path="/roles/:id/edit" element={<RoleForm />} />
+              <Route path="/roles/:id" element={<RoleDetails />} />
           </Route>
           {/* <Route path="*" element={<div className="p-6">Not Found</div>} /> */}
         </Routes>
-    // </BrowserRouter>
+    </PermissionsProvider>
   )
 }
 

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { createUser, getUser, updateUser } from "../../services/usersService";
+import { createUser, getUser, updateUser, getActiveRoles } from "../../services/usersService";
 import AdminLayout from "../../layouts/AdminLayout";
 import PageTitle from "../../components/PageTitle";
+import Select from "react-select";
+import PageLoader from "../../components/PageLoader";
+
 
 export default function UserForm() {
   const { id } = useParams();
@@ -14,12 +17,26 @@ export default function UserForm() {
     name: "",
     email: "",
     password: "",
-    role: "staff",
+    selectedRoles: [],
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
+    (async () => {
+      try {
+        const roles = await getActiveRoles();
+        console.log(roles.data);
+        setRoles(roles.data);
+      } catch (err) {
+        Swal.fire("Error", err.message || "Failed to load roles", "error");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+
     if (!editing) return;
     (async () => {
       setLoading(true);
@@ -30,7 +47,7 @@ export default function UserForm() {
           name: user.name || "",
           email: user.email || "",
           password: "",
-          role: user.role || "staff",
+          selectedRoles: user.roles.map(r => r.id) || [],
         });
       } catch (err) {
         Swal.fire("Error", err.message || "Failed to load user", "error");
@@ -63,12 +80,21 @@ export default function UserForm() {
     }
   };
 
+
+
+const roleOptions = roles.map((r) => ({
+  value: r.id,
+  label: r.label,
+}));
+
   return (
     <AdminLayout title="User Form">
       <PageTitle
         title={editing ? "Edit User" : "Create User"}
         subtitle={editing ? "Edit User" : "Create User"}
       />
+          {loading && <PageLoader />}
+            {!loading && (
       <div className="py-2 max-w-2xl">
         <form onSubmit={submit} className="space-y-4">
           <div>
@@ -117,16 +143,20 @@ export default function UserForm() {
 
           <div>
             <label className="block text-sm">Role  <span className="text-red-600">*</span></label>
-            <select
-              className="w-full border px-3 py-2 rounded-lg"
-              value={form.role}
-              onChange={(e) => setForm({ ...form, role: e.target.value })}
-            >
-              <option value="admin">Admin</option>
-              <option value="manager">Manager</option>
-              <option value="staff">Staff</option>
-              <option value="employee">Employee</option>
-            </select>
+           <Select
+              isMulti                    // enable multiple selection
+              options={roleOptions}       // options array
+              value={roleOptions.filter(opt => form.selectedRoles?.includes(opt.value))} // selected roles
+              onChange={(selected) => {
+                setForm({
+                  ...form,
+                  selectedRoles: selected ? selected.map(opt => opt.value) : []
+                });
+              }}
+
+              placeholder="Select Roles..."
+            />
+
           </div>
 
           <div className="flex gap-2">
@@ -147,6 +177,7 @@ export default function UserForm() {
           </div>
         </form>
       </div>
+            )}
     </AdminLayout>
   );
 }
