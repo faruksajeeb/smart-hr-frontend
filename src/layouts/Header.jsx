@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, Bell, Search } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Header({ user, setSidebarOpen }) {
+export default function Header({ title, user, setSidebarOpen }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export default function Header({ user, setSidebarOpen }) {
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="font-semibold text-amber-900">Smart HR • Dashboard</div>
+        <div className="font-semibold text-green-600">Smart HR • {title}</div>
 
         <div className="ml-auto flex items-center gap-2">
           {/* Search */}

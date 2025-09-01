@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateProfile } from "../services/authServices";
+import { updateProfile } from "../services/authService";
 
 import AdminLayout from "../layouts/AdminLayout";
 
@@ -61,7 +61,7 @@ export default function Profile() {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Profile">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-center text-amber-900 mb-4">
           Profile

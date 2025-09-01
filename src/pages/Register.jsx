@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../services/authServices";
+import { register } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
      const [formData, setFormData] = useState({

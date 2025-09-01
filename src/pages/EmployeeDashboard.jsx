@@ -50,7 +50,32 @@ export default function Dashboard() {
   ];
 
   return (
-     <AdminLayout title="Dashboard">
+     <AdminLayout title="Employee Dashboard">
+        <div className="min-h-screen bg-gray-50 p-6">
+      <h1 className="text-2xl font-bold text-amber-900">
+        Welcome, {user?.name}
+      </h1>
+      <p className="text-gray-600">This is your employee dashboard.</p>
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white shadow rounded-xl p-4">
+          <h3 className="font-semibold">My Profile</h3>
+          <p>Email: {user?.email}</p>
+        </div>
+        <div className="bg-white shadow rounded-xl p-4">
+          <h3 className="font-semibold">Leave Requests</h3>
+          <button className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg">
+            Apply Leave
+          </button>
+        </div>
+        <div className="bg-white shadow rounded-xl p-4">
+          <h3 className="font-semibold">Attendance Exceptions</h3>
+          <button className="mt-2 px-4 py-2 bg-amber-900 text-white rounded-lg">
+            Request Exception
+          </button>
+        </div>
+      </div>
+    </div>
         {/* Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {stats.map((s) => (
@@ -103,43 +128,6 @@ export default function Dashboard() {
             </ul>
             </section>
         </div>
-
-        {/* Table */}
-        <section className="mt-6 bg-white rounded-2xl border">
-            <div className="p-4 flex items-center justify-between">
-            <h3 className="font-semibold">Top Departments</h3>
-            <button className="text-sm px-3 py-1.5 rounded-xl border hover:bg-gray-50">
-                View all
-            </button>
-            </div>
-            <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-                <thead>
-                <tr className="text-left border-t border-b bg-gray-50">
-                    <th className="px-4 py-2">Department</th>
-                    <th className="px-4 py-2">Headcount</th>
-                    <th className="px-4 py-2">Open Roles</th>
-                    <th className="px-4 py-2">Attrition</th>
-                </tr>
-                </thead>
-                <tbody>
-                {[
-                    { dept: "Engineering", head: 520, open: 12, attr: "3.1%" },
-                    { dept: "Sales", head: 318, open: 7, attr: "2.4%" },
-                    { dept: "Operations", head: 210, open: 3, attr: "1.9%" },
-                    { dept: "HR", head: 64, open: 1, attr: "1.2%" },
-                ].map((row) => (
-                    <tr key={row.dept} className="border-b last:border-b-0">
-                    <td className="px-4 py-2">{row.dept}</td>
-                    <td className="px-4 py-2">{row.head}</td>
-                    <td className="px-4 py-2">{row.open}</td>
-                    <td className="px-4 py-2">{row.attr}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            </div>
-        </section>
      </AdminLayout>
     
   );

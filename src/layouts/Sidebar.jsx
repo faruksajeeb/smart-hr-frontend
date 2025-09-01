@@ -1,4 +1,5 @@
 import { Download } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ sidebarOpen }) {
   return (
@@ -8,6 +9,20 @@ export default function Sidebar({ sidebarOpen }) {
       } lg:translate-x-0 transition-transform lg:static fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r p-4 flex-shrink-0`}
     >
       <nav className="space-y-1">
+        <Link
+          key="users"
+          to="/users"
+          className="block px-3 py-2 rounded-xl text-sm hover:bg-gray-100"
+        >
+            Users
+        </Link>
+        <Link
+          key="permissions"
+          to="/permissions"
+          className="block px-3 py-2 rounded-xl text-sm hover:bg-gray-100"
+        >
+            Permissions
+        </Link>
         {["Overview", "Employees", "Attendance", "Payroll", "Leaves", "Settings"].map(
           (item) => (
             <a
