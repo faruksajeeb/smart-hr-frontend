@@ -10,7 +10,7 @@ export default function Sidebar({ sidebarOpen }) {
     <aside
       className={`${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 transition-transform lg:static fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r p-4 flex-shrink-0`}
+      } lg:translate-x-0 transition-transform lg:static fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 p-4 flex-shrink-0`}
     >
       <nav className="space-y-1">
         {hasPermission("view-user") && (
@@ -22,7 +22,7 @@ export default function Sidebar({ sidebarOpen }) {
             Users
         </Link>
         )}
-        {/* {hasPermission("view-permission") && ( */}
+        {hasPermission("view-permission") && (
         <Link
           key="permissions"
           to="/permissions"
@@ -30,7 +30,7 @@ export default function Sidebar({ sidebarOpen }) {
         >
             Permissions
         </Link>
-{/* )} */}
+        )}
         {hasPermission("view-role") && (
         <Link
           key="roles"
@@ -40,6 +40,17 @@ export default function Sidebar({ sidebarOpen }) {
             Roles
         </Link>
         )}
+
+        {hasPermission("view-master-data") && (
+        <Link
+          key="master-data"
+          to="/master-data"
+          className="block px-3 py-2 rounded-xl text-sm hover:bg-gray-100"
+        >
+            Master Data
+        </Link>
+        )}
+
         {["Overview", "Employees", "Attendance", "Payroll", "Leaves", "Settings"].map(
           (item) => (
             <a

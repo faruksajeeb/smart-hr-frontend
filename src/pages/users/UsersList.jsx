@@ -170,7 +170,7 @@ export default function UsersList() {
                       {u.roles.map((p) => (
                         <span
                           key={p.id}
-                          className="m-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
+                          className="m-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border-1 border-blue-950"
                         >
                           {p.label}
                         </span>

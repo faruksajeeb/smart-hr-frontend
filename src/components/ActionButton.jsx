@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Plus, Edit, View, Trash2, Table, Upload, DownloadIcon, RefreshCcw } from "lucide-react";
+import { Plus, Edit, View, Trash2, Table, Upload, DownloadIcon, RefreshCcw, Unlock, LockIcon  } from "lucide-react";
 
-const ActionButton = ({ type, to, onClick, icon: Icon, children }) => {
+const ActionButton = ({ type, to, href, onClick, icon: Icon, children }) => {
   const colors = {
     manage: "bg-blue-600 hover:bg-blue-700 text-white",
     view: "bg-blue-500 hover:bg-blue-600 text-white",
@@ -12,6 +12,8 @@ const ActionButton = ({ type, to, onClick, icon: Icon, children }) => {
     refresh: "bg-blue-400 hover:bg-blue-700 text-white",
     import: "bg-yellow-600 hover:bg-yellow-700 text-white",
     export: "bg-green-600 hover:bg-green-700 text-white",
+    activate: "bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded",
+    deactivate: "bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded",
   };
 
   const icons = {
@@ -23,6 +25,8 @@ const ActionButton = ({ type, to, onClick, icon: Icon, children }) => {
     import: Upload,
     export: DownloadIcon,
     refresh: RefreshCcw,
+    activate: Unlock,
+    deactivate: LockIcon
   };
   Icon = Icon || icons[type];
 
@@ -37,6 +41,7 @@ const ActionButton = ({ type, to, onClick, icon: Icon, children }) => {
       </Link>
     );
   }
+
 
   return (
     <button onClick={onClick} className={`${baseClass} ${colors[type]}`}>

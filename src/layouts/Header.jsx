@@ -7,7 +7,7 @@ export default function Header({ title, user, setSidebarOpen }) {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-gray-200">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
         {/* Sidebar toggle */}
         <button

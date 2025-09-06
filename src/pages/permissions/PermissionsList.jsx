@@ -16,6 +16,7 @@ import ActionButton from "../../components/ActionButton";
 import PageTitle from "../../components/PageTitle";
 
 import { usePermissions } from "../../context/PermissionsContext";
+import TableFooter from "../../components/TableFooter";
 
 export default function PermissionsList() {
   const { hasPermission } = usePermissions();
@@ -214,6 +215,8 @@ export default function PermissionsList() {
               )}
             </tbody>
           </table>
+
+          <TableFooter meta={PermissionsPayload.meta} />
         </div>
 
         {/* Pager */}

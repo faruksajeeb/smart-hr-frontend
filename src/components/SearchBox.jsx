@@ -18,13 +18,13 @@ const SearchBox = ({
       />
 
       {/* Search button */}
-      <button
+      {/* <button
         onClick={onSearch}
         className="px-3 py-2 border rounded-lg inline-flex items-center bg-purple-500 text-white hover:bg-purple-600 transition"
       >
         <Search className="w-4 h-4" />
         Search
-      </button>
+      </button> */}
     </>
   );
 };

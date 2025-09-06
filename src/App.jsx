@@ -14,6 +14,8 @@ import Login from './pages/Login.jsx';
 import Profile from './pages/Profile.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
+import Settings from './pages/Settings.jsx';
+
 import UsersList from './pages/users/UsersList.jsx';
 import UserForm from './pages/users/UserForm.jsx';
 import UserDetails from './pages/users/UserDetails.jsx';
@@ -25,6 +27,11 @@ import PermissionDetails from './pages/permissions/PermissionDetails.jsx';
 import RolesList from './pages/roles/RolesList.jsx';
 import RoleForm from './pages/roles/RoleForm.jsx';
 import RoleDetails from './pages/roles/RoleDetails.jsx';
+
+import MasterDataList from './pages/master-data/MasterDataList.jsx';
+import MasterDataForm from './pages/master-data/MasterDataForm.jsx';
+import MasterDataDetails from './pages/master-data/MasterDataDetails.jsx';
+import MasterDataImport from './pages/master-data/MasterDataImport.jsx';
 
 
 
@@ -42,6 +49,7 @@ function App() {
               {/* Admin / HR dashboards */}
               <Route path="/dashboard" element={<Dashboard />} />
               {/* Employee dashboard */}
+              <Route path="/settings" element={<Settings />} />
               <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/update-profile" element={<Home />} />
@@ -62,6 +70,12 @@ function App() {
               <Route path="/roles/create" element={<RoleForm />} />
               <Route path="/roles/:id/edit" element={<RoleForm />} />
               <Route path="/roles/:id" element={<RoleDetails />} />
+
+              <Route path="/master-data" element={<MasterDataList />} />
+              <Route path="/master-data/create" element={<MasterDataForm />} />
+              <Route path="/master-data/:id/edit" element={<MasterDataForm />} />
+              <Route path="/master-data/:id" element={<MasterDataDetails />} />
+              <Route path="/master-data/import" element={<MasterDataImport />} />
           </Route>
           {/* <Route path="*" element={<div className="p-6">Not Found</div>} /> */}
         </Routes>

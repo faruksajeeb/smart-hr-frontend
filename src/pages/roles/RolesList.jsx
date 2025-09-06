@@ -13,6 +13,7 @@ import ActionButton from "../../components/ActionButton";
 import PageTitle from "../../components/PageTitle";
 
 import { usePermissions } from "../../context/PermissionsContext";
+import TableFooter from "../../components/TableFooter";
 
 export default function RolesList() {
   const { hasPermission } = usePermissions();
@@ -178,7 +179,7 @@ export default function RolesList() {
                       {u.permissions.map((p) => (
                         <span
                           key={p.id}
-                          className="inline-block  m-1 px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs border-1 border-gray-800"
+                          className="inline-block  m-1 px-2 py-1 bg-purple-100 text-purple-900 rounded text-xs border-1 border-gray-800"
                         >
                           {p.label}
                         </span>
@@ -210,6 +211,7 @@ export default function RolesList() {
               )}
             </tbody>
           </table>
+          <TableFooter meta={RolesPayload.meta} />
         </div>
 
         {/* Pager */}
